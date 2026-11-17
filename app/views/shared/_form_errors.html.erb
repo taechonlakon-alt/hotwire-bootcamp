@@ -1,0 +1,9 @@
+<% if record.errors.any? %>
+  <div id="<%= dom_id(record, :errors) %>" role="alert" class="mt-2 text-sm text-red-700">
+    <ul>
+      <% record.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

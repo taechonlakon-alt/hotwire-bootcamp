@@ -1,0 +1,16 @@
+<%# autofocus is only set on the empty form sent back after a successful create. %>
+<% autofocus = local_assigns.fetch(:autofocus, false) %>
+<div id="task_form">
+  <%= form_with model: task, class: "flex gap-2" do |form| %>
+    <%= form.label :title, "Task title", class: "sr-only" %>
+    <%= form.text_field :title,
+          class: "form-input flex-1",
+          placeholder: "Add a new task",
+          autocomplete: "off",
+          autofocus: autofocus,
+          aria: { invalid: task.errors.any? || nil, describedby: (dom_id(task, :errors) if task.errors.any?) } %>
+    <%= form.submit "Add", class: "btn btn-primary", data: { turbo_submits_with: "Adding..." } %>
+  <% end %>
+
+  <%= render "shared/form_errors", record: task %>
+</div>
