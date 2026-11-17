@@ -17,5 +17,13 @@
     <span class="<%= class_names("min-w-0 flex-1 break-words", "text-gray-400 line-through": task.done?) %>"><%= task.title %></span>
 
     <span class="<%= class_names("badge", "badge-success": task.done?) %>"><%= task.status.humanize %></span>
+
+    <%= button_to task_path(task),
+          method: :delete,
+          class: "btn-icon btn-icon-danger",
+          form: { data: { turbo_confirm: "Delete \"#{task.title}\"?" } },
+          aria: { label: "Delete #{task.title}" } do %>
+      <span class="text-lg leading-none" aria-hidden="true">&times;</span>
+    <% end %>
   </div>
 <% end %>

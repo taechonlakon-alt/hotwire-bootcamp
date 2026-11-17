@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: :update
+  before_action :set_task, only: %i[update destroy]
 
   def index
     @tasks = Task.ordered
@@ -35,6 +35,15 @@ class TasksController < ApplicationController
         format.html { redirect_to tasks_path, alert: alert, status: :see_other }
         format.turbo_stream { render status: :unprocessable_content }
       end
+    end
+  end
+
+  def destroy
+    @task.destroy!
+
+    respond_to do |format|
+      format.html { redirect_to tasks_path, notice: "Task was deleted.", status: :see_other }
+      format.turbo_stream
     end
   end
 
