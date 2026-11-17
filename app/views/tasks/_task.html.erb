@@ -1,4 +1,4 @@
-<%= turbo_frame_tag dom_id(task) do %>
+<%= turbo_frame_tag dom_id(task), data: { task_filter_target: "item", status: task.status } do %>
   <div role="listitem" class="flex items-center gap-3 py-3">
     <%= button_to task_path(task),
           method: :patch,

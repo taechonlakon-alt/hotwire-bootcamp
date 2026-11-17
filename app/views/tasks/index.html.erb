@@ -9,8 +9,25 @@
     <%= render "tasks/stats" %>
   </div>
 
-  <section aria-labelledby="task_list_heading" class="border-t border-gray-200 px-4 py-5 sm:px-6">
-    <h2 id="task_list_heading" class="text-base font-semibold">Task List</h2>
+  <section aria-labelledby="task_list_heading" class="border-t border-gray-200 px-4 py-5 sm:px-6" data-controller="task-filter">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <div>
+        <h2 id="task_list_heading" class="text-base font-semibold">Task List</h2>
+        <p class="text-xs text-gray-500" data-task-filter-target="count" aria-live="polite" hidden></p>
+      </div>
+
+      <div class="flex gap-1" role="group" aria-label="Filter tasks">
+        <% { "all" => "All", "todo" => "Todo", "done" => "Done" }.each do |status, label| %>
+          <button type="button"
+                  class="btn px-3 py-1 aria-pressed:border-green-600 aria-pressed:bg-green-600 aria-pressed:text-white"
+                  data-task-filter-target="filter"
+                  data-action="task-filter#select"
+                  data-task-filter-status-param="<%= status %>"
+                  aria-pressed="<%= status == "all" %>"
+                  hidden><%= label %></button>
+        <% end %>
+      </div>
+    </div>
 
     <div class="group mt-2">
       <div id="tasks" role="list">
