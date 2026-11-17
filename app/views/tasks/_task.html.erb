@@ -1,11 +1,17 @@
 <%= turbo_frame_tag dom_id(task) do %>
   <div role="listitem" class="flex items-center gap-3 py-3">
-    <% if task.done? %>
-      <span class="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-green-600 text-white" aria-hidden="true">
-        <svg viewBox="0 0 20 20" fill="currentColor" class="size-4"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.6l7.3-7.3a1 1 0 0 1 1.4 0Z" clip-rule="evenodd"/></svg>
-      </span>
-    <% else %>
-      <span class="size-6 shrink-0 rounded-full bg-gray-300" aria-hidden="true"></span>
+    <%= button_to task_path(task),
+          method: :patch,
+          params: { task: { status: task.next_status } },
+          class: "btn-icon",
+          aria: { label: "Mark #{task.title} as #{task.next_status.humanize}" } do %>
+      <% if task.done? %>
+        <span class="inline-flex size-6 items-center justify-center rounded-full bg-green-600 text-white" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="size-4"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.6l7.3-7.3a1 1 0 0 1 1.4 0Z" clip-rule="evenodd"/></svg>
+        </span>
+      <% else %>
+        <span class="size-6 rounded-full bg-gray-300" aria-hidden="true"></span>
+      <% end %>
     <% end %>
 
     <span class="<%= class_names("min-w-0 flex-1 break-words", "text-gray-400 line-through": task.done?) %>"><%= task.title %></span>

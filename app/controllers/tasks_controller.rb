@@ -1,4 +1,6 @@
 class TasksController < ApplicationController
+  before_action :set_task, only: :update
+
   def index
     @tasks = Task.ordered
     @task = Task.new
@@ -21,9 +23,32 @@ class TasksController < ApplicationController
     end
   end
 
+  def update
+    respond_to do |format|
+      if @task.update(status_params)
+        format.html { redirect_to tasks_path, notice: "Task was updated." }
+        format.turbo_stream
+      else
+        alert = @task.errors.full_messages.to_sentence
+        @task.restore_attributes
+
+        format.html { redirect_to tasks_path, alert: alert, status: :see_other }
+        format.turbo_stream { render status: :unprocessable_content }
+      end
+    end
+  end
+
   private
 
   def task_params
     params.expect(task: [ :title ])
+  end
+
+  def set_task
+    @task = Task.find(params.expect(:id))
+  end
+
+  def status_params
+    params.expect(task: [ :status ])
   end
 end
