@@ -1,0 +1,22 @@
+<% counts = task_counts %>
+<div id="task_stats">
+  <div class="flex items-center justify-between gap-4">
+    <h2 class="text-xl font-semibold">My Tasks</h2>
+    <span class="badge badge-success"><%= pluralize(counts[:total], "Task") %></span>
+  </div>
+
+  <dl class="mt-5 grid grid-cols-3 gap-4">
+    <div class="flex flex-col-reverse">
+      <dt class="text-sm text-gray-500">Total</dt>
+      <dd class="text-2xl font-semibold"><%= counts[:total] %></dd>
+    </div>
+    <div class="flex flex-col-reverse">
+      <dt class="text-sm text-gray-500">Todo</dt>
+      <dd class="text-2xl font-semibold"><%= counts[:todo] %></dd>
+    </div>
+    <div class="flex flex-col-reverse">
+      <dt class="text-sm text-gray-500">Done</dt>
+      <dd class="text-2xl font-semibold"><%= counts[:done] %></dd>
+    </div>
+  </dl>
+</div>

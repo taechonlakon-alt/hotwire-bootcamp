@@ -1,2 +1,20 @@
-<%# Placeholder until T4 builds the My Tasks page. %>
-<h1>My Tasks</h1>
+<div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+  <header class="border-b border-gray-200 px-4 py-3 sm:px-6">
+    <h1 class="text-sm font-semibold text-gray-500">Todo Management UI</h1>
+  </header>
+
+  <div class="px-4 py-5 sm:px-6">
+    <%= render "tasks/stats" %>
+  </div>
+
+  <section aria-labelledby="task_list_heading" class="border-t border-gray-200 px-4 py-5 sm:px-6">
+    <h2 id="task_list_heading" class="text-base font-semibold">Task List</h2>
+
+    <div class="group mt-2">
+      <div id="tasks" role="list">
+        <%= render partial: "tasks/task", collection: @tasks %>
+      </div>
+      <p class="py-6 text-center text-sm text-gray-500 group-has-[turbo-frame]:hidden">No tasks yet.</p>
+    </div>
+  </section>
+</div>
