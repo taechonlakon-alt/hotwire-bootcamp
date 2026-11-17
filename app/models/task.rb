@@ -8,7 +8,18 @@ class Task < ApplicationRecord
   scope :ordered, -> { order(:created_at, :id) }
   scope :not_done, -> { where.not(status: :done) }
 
+  after_create_commit -> { broadcast_append_later_to "tasks", target: "tasks" }
+  after_update_commit -> { broadcast_replace_later_to "tasks" }
+  after_destroy_commit -> { broadcast_remove_to "tasks" }
+  after_commit :broadcast_stats_later
+
   def next_status
     NEXT_STATUS.fetch(status)
+  end
+
+  private
+
+  def broadcast_stats_later
+    Turbo::StreamsChannel.broadcast_replace_later_to "tasks", target: "task_stats", partial: "tasks/stats"
   end
 end
