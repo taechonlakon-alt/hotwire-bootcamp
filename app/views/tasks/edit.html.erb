@@ -1,0 +1,8 @@
+<%# With JS, Turbo swaps only this frame into the task row. Without JS, this renders as a full page. %>
+<div class="rounded-lg border border-gray-200 bg-white px-4 py-5 shadow-sm sm:px-6">
+  <h1 class="text-base font-semibold">Edit task</h1>
+
+  <%= turbo_frame_tag dom_id(@task) do %>
+    <%= render "tasks/edit_form", task: @task %>
+  <% end %>
+</div>

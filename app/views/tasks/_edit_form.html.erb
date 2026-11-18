@@ -1,0 +1,16 @@
+<%# Rendered inside the task's turbo frame, so the field ids are scoped with dom_id to stay unique on the page. %>
+<div role="listitem" class="py-3">
+  <%= form_with model: task, class: "flex items-center gap-2" do |form| %>
+    <%= form.label :title, "Task title", class: "sr-only", for: dom_id(task, :title) %>
+    <%= form.text_field :title,
+          id: dom_id(task, :title),
+          class: "form-input flex-1",
+          autocomplete: "off",
+          autofocus: true,
+          aria: { invalid: task.errors.any? || nil, describedby: (dom_id(task, :errors) if task.errors.any?) } %>
+    <%= form.submit "Save", class: "btn btn-primary", data: { turbo_submits_with: "Saving..." } %>
+    <%= link_to "Cancel", tasks_path, class: "btn" %>
+  <% end %>
+
+  <%= render "shared/form_errors", record: task %>
+</div>

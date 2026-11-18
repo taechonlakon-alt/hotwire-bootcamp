@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[update destroy]
+  before_action :set_task, only: %i[edit update destroy]
 
   def index
     @tasks = Task.ordered
@@ -23,11 +23,20 @@ class TasksController < ApplicationController
     end
   end
 
+  def edit
+  end
+
   def update
     respond_to do |format|
-      if @task.update(status_params)
+      if @task.update(update_params)
         format.html { redirect_to tasks_path, notice: "Task was updated." }
         format.turbo_stream
+      elsif @task.errors.include?(:title)
+        format.html { render :edit, status: :unprocessable_content }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(@task, partial: "tasks/edit_form", locals: { task: @task }),
+                 status: :unprocessable_content
+        end
       else
         alert = @task.errors.full_messages.to_sentence
         @task.restore_attributes
@@ -57,7 +66,7 @@ class TasksController < ApplicationController
     @task = Task.find(params.expect(:id))
   end
 
-  def status_params
-    params.expect(task: [ :status ])
+  def update_params
+    params.expect(task: [ :title, :status ])
   end
 end
