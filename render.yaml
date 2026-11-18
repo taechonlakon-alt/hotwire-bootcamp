@@ -5,8 +5,8 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile
     # Skip Thruster: Render terminates TLS and routes to $PORT, which Puma binds directly.
-    # The entrypoint still runs db:prepare because the command ends with "./bin/rails server".
-    dockerCommand: ./bin/rails server
+    # bin/render-start prepares the database before booting the server.
+    dockerCommand: ./bin/render-start
     healthCheckPath: /up
     envVars:
       - key: DATABASE_URL

@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+# Render start command: prepare the shared database, then boot Puma on $PORT.
+# Done here instead of relying on bin/docker-entrypoint's argument check,
+# because Render may wrap dockerCommand in a shell.
+./bin/rails db:prepare_shared
+exec ./bin/rails server
