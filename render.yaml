@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: hotwire-bootcamp
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    # Skip Thruster: Render terminates TLS and routes to $PORT, which Puma binds directly.
+    # The entrypoint still runs db:prepare because the command ends with "./bin/rails server".
+    dockerCommand: ./bin/rails server
+    healthCheckPath: /up
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hotwire-bootcamp-db
+          property: connectionString
+      # Solid Cache / Queue / Cable share the single free Postgres database.
+      - key: CACHE_DATABASE_URL
+        fromDatabase:
+          name: hotwire-bootcamp-db
+          property: connectionString
+      - key: QUEUE_DATABASE_URL
+        fromDatabase:
+          name: hotwire-bootcamp-db
+          property: connectionString
+      - key: CABLE_DATABASE_URL
+        fromDatabase:
+          name: hotwire-bootcamp-db
+          property: connectionString
+      - key: SECRET_KEY_BASE
+        generateValue: true
+      # Free plan has no background worker, so run Solid Queue inside Puma.
+      - key: SOLID_QUEUE_IN_PUMA
+        value: "1"
+      - key: WEB_CONCURRENCY
+        value: "2"
+
+databases:
+  - name: hotwire-bootcamp-db
+    plan: free
