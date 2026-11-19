@@ -9,6 +9,10 @@
     <%= render "tasks/stats" %>
   </div>
 
+  <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+    <%= render "tasks/form", task: @task %>
+  </div>
+
   <section aria-labelledby="task_list_heading" class="border-t border-gray-200 px-4 py-5 sm:px-6" data-controller="task-filter">
     <div class="flex flex-wrap items-center justify-between gap-2">
       <div>
@@ -32,12 +36,10 @@
     <div class="group mt-2">
       <div id="tasks" role="list">
         <%= render partial: "tasks/task", collection: @tasks %>
+        <%# Last child of #tasks: new tasks are prepended at the top, so they never land after it. %>
+        <%= render "tasks/next_page", tasks: @tasks, pagy: @pagy %>
       </div>
       <p class="py-6 text-center text-sm text-gray-500 group-has-[turbo-frame]:hidden">No tasks yet.</p>
     </div>
   </section>
-
-  <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-    <%= render "tasks/form", task: @task %>
-  </div>
 </div>

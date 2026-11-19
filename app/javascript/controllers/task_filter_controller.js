@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Filters task rows in the page without a request (All / Todo / Done).
+// Filters the task rows loaded so far, without a request (All / Todo / Done).
 // Rows added or replaced by Turbo Streams or broadcasts are filtered as they connect.
 export default class extends Controller {
   static targets = [ "filter", "item", "count" ]
@@ -20,12 +20,27 @@ export default class extends Controller {
     this.#apply()
   }
 
+  disconnect() {
+    cancelAnimationFrame(this.applyFrame)
+    this.applyFrame = null
+  }
+
+  // A loaded page connects many rows at once; filter them in one pass, not once per row.
   itemTargetConnected() {
-    this.#apply()
+    this.#scheduleApply()
   }
 
   itemTargetDisconnected() {
-    this.#apply()
+    this.#scheduleApply()
+  }
+
+  #scheduleApply() {
+    if (this.applyFrame) return
+
+    this.applyFrame = requestAnimationFrame(() => {
+      this.applyFrame = null
+      this.#apply()
+    })
   }
 
   #apply() {

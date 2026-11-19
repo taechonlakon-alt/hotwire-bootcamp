@@ -1,5 +1,5 @@
 <% if @task.persisted? %>
-  <%= turbo_stream.append "tasks", partial: "tasks/task", locals: { task: @task } %>
+  <%= turbo_stream.prepend "tasks", partial: "tasks/task", locals: { task: @task } %>
   <%= turbo_stream.replace "task_stats", partial: "tasks/stats" %>
   <%= turbo_stream.replace "task_form", partial: "tasks/form", locals: { task: Task.new, autofocus: true } %>
 <% else %>

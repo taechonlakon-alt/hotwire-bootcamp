@@ -1,0 +1,6 @@
+<%# Lazy frame for the next page: Turbo loads it when it scrolls into view. %>
+<% if (url = pagy.page_url(:next)) %>
+  <%= turbo_frame_tag "tasks_after_#{tasks.last.id}", src: url, loading: :lazy do %>
+    <p class="py-4 text-center text-sm text-gray-500">Loading more tasks…</p>
+  <% end %>
+<% end %>

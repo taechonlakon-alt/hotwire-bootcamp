@@ -57,3 +57,6 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
+
+# Pagination for the task list [https://github.com/ddnexus/pagy]
+gem "pagy", "~> 43.3"
